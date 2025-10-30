@@ -71,7 +71,7 @@ public class ProductPanel extends JPanel {
     private void loadProductsFromDatabase() throws SQLException {
         try (Connection c = DBConnection.getConnection();
              Statement s = c.createStatement();
-             ResultSet rs = s.executeQuery("SELECT NAME, PRICE FROM PRODUCT")) {
+             ResultSet rs = s.executeQuery("SELECT ID, NAME, PRICE, DESCRIPTION FROM PRODUCT")) {
 
             while (rs.next()) {
                 int id = rs.getInt("ID");
