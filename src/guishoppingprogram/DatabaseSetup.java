@@ -10,21 +10,33 @@ package guishoppingprogram;
  */
 import java.sql.*;
 
-import java.sql.*;
 
 public final class DatabaseSetup {
     public static void init() {
         try (Connection c = DBConnection.getConnection();
              Statement s = c.createStatement()) {
 
-            // Create PRODUCT table
-            s.executeUpdate("CREATE TABLE PRODUCT (ID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, NAME VARCHAR(100), DESCRIPTION VARCHAR(500), PRICE DOUBLE, STOCK INT)");
+           
+            s.executeUpdate("CREATE TABLE PRODUCT (" + 
+                    "ID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " + 
+                    "NAME VARCHAR(100), " + 
+                    "DESCRIPTION VARCHAR(500), " +
+                    "PRICE DOUBLE, " + 
+                    "STOCK INT)");
 
-            // Create ORDER table
-            s.executeUpdate("CREATE TABLE ORDERS (ID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, TOTAL DOUBLE, ORDER_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
+            
+            s.executeUpdate("CREATE TABLE ORDERS ( " +
+                    "order_id GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                    "total_price DOUBLE, " +
+                    "order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
 
-            // Create ORDER_ITEM table
-            s.executeUpdate("CREATE TABLE ORDER_ITEM (ID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, ORDER_ID INT, PRODUCT_NAME VARCHAR(100), QUANTITY INT, PRICE DOUBLE)");
+          
+            s.executeUpdate("CREATE TABLE OrderItems (" +
+                    "id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                    "order_id INT, " +
+                    "product_name VARCHAR(100), " +
+                    "Quantity INT, " +
+                    "price DOUBLE)");
 
             insertSampleProducts(c);
 
@@ -42,7 +54,7 @@ public final class DatabaseSetup {
             ps.setString(1, names[i]);
             ps.setString(2, names[i] + " description");
             ps.setDouble(3, prices[i]);
-            ps.setInt(4, 50); // default stock
+            ps.setInt(4, 50); 
             ps.executeUpdate();
         }
     }

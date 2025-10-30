@@ -4,11 +4,12 @@
  */
 package guishoppingprogram;
 
-import com.sun.jdi.connect.spi.Connection;
-import java.beans.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.derby.iapi.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.ResultSet;
+
 
 /**
  *
@@ -19,12 +20,20 @@ public class ProductDAO {
 
     public static List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
+        String sql = "SELECT ID, NAME, PRICE, DESCRIPTION FROM PRODUCT";
+        
+        
         try (Connection c = DBConnection.getConnection();
              Statement s = c.createStatement();
-             ResultSet rs = s.executeQuery("SELECT NAME, PRICE FROM PRODUCT")) {
+             ResultSet rs = s.executeQuery(sql)) {
 
             while (rs.next()) {
-                products.add(new Product(rs.getString("NAME"), rs.getDouble("PRICE")));
+                products.add(new Product(
+                rs.getInt("ID"), 
+                rs.getString("NAME"),
+                rs.getDouble("PRICE"),
+                rs.getString("DESCRIPTION")
+                        ));
             }
 
         } catch (SQLException e) {
@@ -32,5 +41,28 @@ public class ProductDAO {
         }
         return products;
     }
-}
+    
+    public Product getProductByName(String name) {
+        String sql = "SELECT ID, NAME, PRICE, DESCRIPTION FROM PRODUCT WHERE NAME = ?";
+        try (Connection c = DBConnection.getConnection();
+            PreparedStatement ps = c.prepareStatement(sql)) {
+            
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()){
+                return new Product(
+                rs.getInt("ID"), 
+                rs.getString("NAME"),
+                rs.getDouble("PRICE"),
+                rs.getString("DESCRIPTION")
+                );
+            }
+            
+             } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+        }
+    }
+
 
