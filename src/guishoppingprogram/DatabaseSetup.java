@@ -16,42 +16,55 @@ public final class DatabaseSetup {
         try (Connection c = DBConnection.getConnection();
              Statement s = c.createStatement()) {
 
-           
+           try { 
             s.executeUpdate("CREATE TABLE PRODUCT (" + 
                     "ID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " + 
                     "NAME VARCHAR(100), " + 
                     "DESCRIPTION VARCHAR(500), " +
                     "PRICE DOUBLE, " + 
                     "STOCK INT)");
-
-            
+           } catch (SQLException e) {
+            if (!"X0Y32".equals(e.getSQLState())) e.printStackTrace();
+        }
+           try { 
             s.executeUpdate("CREATE TABLE ORDERS ( " +
                     "order_id GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
                     "total_price DOUBLE, " +
                     "order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
+            } catch (SQLException e) {
+            if (!"X0Y32".equals(e.getSQLState())) e.printStackTrace();
+        }
 
-          
+          try {
             s.executeUpdate("CREATE TABLE OrderItems (" +
                     "id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
                     "order_id INT, " +
                     "product_name VARCHAR(100), " +
                     "Quantity INT, " +
                     "price DOUBLE)");
-            
+            } catch (SQLException e) {
+            if (!"X0Y32".equals(e.getSQLState())) e.printStackTrace();
+        }
+          try {
              s.executeUpdate("CREATE TABLE CART (" + 
                     "ID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " + 
                     "PRODUCT_NAME VARCHAR(100), " + 
                     "QUANTITY INT, " +
-                    "PRICE DOUBLE, " + 
+                    "PRICE DOUBLE" + 
                     ")");
-
-            insertSampleProducts(c);
-
-        } catch (SQLException e) {
+} catch (SQLException e) {
             if (!"X0Y32".equals(e.getSQLState())) e.printStackTrace();
         }
-    }
-
+            ResultSet rs = c.createStatement().executeQuery("SELECT COUNT(*) FROM PRODUCT");
+            rs.next();
+            if (rs.getInt(1) == 0) {
+            insertSampleProducts(c);
+}
+} catch (SQLException e) {
+             e.printStackTrace();
+        }
+      
+}
     private static void insertSampleProducts(Connection c) throws SQLException {
         String[] names = {"Apples", "Bananas", "Milk", "Bread", "Eggs", "Cheese", "Orange Juice", "Chicken", "Salmon", "Yogurt"};
         double[] prices = {3.99, 2.49, 4.29, 3.49, 6.99, 5.79, 4.50, 12.99, 15.99, 5.50};
