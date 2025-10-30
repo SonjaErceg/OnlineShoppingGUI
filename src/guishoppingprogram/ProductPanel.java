@@ -32,26 +32,26 @@ public class ProductPanel extends JPanel {
         }
 
         // Add extra products manually
-        allProducts.add(new Product("Orange Juice", 4.50));
-        allProducts.add(new Product("Yogurt", 2.99));
-        allProducts.add(new Product("Butter", 3.79));
-        allProducts.add(new Product("Chicken", 12.99));
-        allProducts.add(new Product("Salmon", 15.99));
-        allProducts.add(new Product("Rice", 5.50));
-        allProducts.add(new Product("Pasta", 3.99));
-        allProducts.add(new Product("Cereal", 4.20));
-        allProducts.add(new Product("Tomatoes", 2.79));
-        allProducts.add(new Product("Lettuce", 1.99));
-        allProducts.add(new Product("Carrots", 2.50));
-        allProducts.add(new Product("Potatoes", 3.30));
-        allProducts.add(new Product("Onions", 2.10));
-        allProducts.add(new Product("Peanut Butter", 5.00));
-        allProducts.add(new Product("Jam", 3.60));
-        allProducts.add(new Product("Coffee", 6.50));
-        allProducts.add(new Product("Tea", 4.00));
-        allProducts.add(new Product("Milk Chocolate", 2.99));
-        allProducts.add(new Product("Cookies", 3.50));
-        allProducts.add(new Product("Ice Cream", 7.99));
+        allProducts.add(new Product(0, "Orange Juice", 4.50, "Freshly squeezed"));
+        allProducts.add(new Product(0, "Yogurt", 2.99, "Plain"));
+        allProducts.add(new Product(0, "Butter", 3.79, "Unsalted"));
+        allProducts.add(new Product(0, "Chicken", 12.99, "Chicken Breast"));
+        allProducts.add(new Product(0, "Salmon", 15.99, "Smoked"));
+        allProducts.add(new Product(0, "Rice", 5.50, "Brown Rice"));
+        allProducts.add(new Product(0, "Pasta", 3.99, "Macaroni"));
+        allProducts.add(new Product(0, "Cereal", 4.20, "Crunchy"));
+        allProducts.add(new Product(0, "Tomatoes", 2.79, "Orange"));
+        allProducts.add(new Product(0, "Lettuce", 1.99, "Fresh"));
+        allProducts.add(new Product(0, "Carrots", 2.50, "Locally sourced"));
+        allProducts.add(new Product(0, "Potatoes", 3.30, "Locally sourced"));
+        allProducts.add(new Product(0, "Onions", 2.10, "Small"));
+        allProducts.add(new Product(0, "Peanut Butter", 5.00, "Organic"));
+        allProducts.add(new Product(0, "Jam", 3.60, "Cranberry Jam"));
+        allProducts.add(new Product(0, "Coffee", 6.50, "Ground Coffee"));
+        allProducts.add(new Product(0, "Tea", 4.00, "Green tea"));
+        allProducts.add(new Product(0, "Milk Chocolate", 2.99, "Chnocolate bar"));
+        allProducts.add(new Product(0, "Cookies", 3.50, "Chocolate Chips"));
+        allProducts.add(new Product(0, "Ice Cream", 7.99, "Vanilla"));
 
         displayedProducts.addAll(allProducts);
         displayProducts(displayedProducts);
@@ -74,9 +74,11 @@ public class ProductPanel extends JPanel {
              ResultSet rs = s.executeQuery("SELECT NAME, PRICE FROM PRODUCT")) {
 
             while (rs.next()) {
+                int id = rs.getInt("ID");
                 String name = rs.getString("NAME");
                 double price = rs.getDouble("PRICE");
-                allProducts.add(new Product(name, price));
+                String description = rs.getString("DESCRIPTION");
+                allProducts.add(new Product(id, name, price, description));
             }
         }
     }
