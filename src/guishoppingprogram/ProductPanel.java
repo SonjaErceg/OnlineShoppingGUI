@@ -125,6 +125,8 @@ public class ProductPanel extends JPanel {
         JButton buyButton = new JButton("Buy Now");
         buyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         buyButton.addActionListener(e -> {
+            CartDAO cartDAO = new CartDAO();
+            cartDAO.addCartItem(new CartItem(product, 1));
             ProductDetailPanel detailPanel = new ProductDetailPanel(mainFrame);
             detailPanel.setProduct(product);
             mainFrame.showDetailPanel(detailPanel);

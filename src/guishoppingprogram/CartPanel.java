@@ -6,7 +6,8 @@ package guishoppingprogram;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.util.List;
+
 
 public class CartPanel extends JPanel {
 
@@ -14,11 +15,40 @@ public class CartPanel extends JPanel {
 
     public CartPanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
+        initUI();
+        
+        CartDAO cartDAO = new CartDAO();
+        List<CartItem> savedItems = cartDAO.getAllCartItems();
+        displayItems(savedItems);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(Color.WHITE);
         buildCart();
     }
 
+    private void displayItems(List<CartItem> items){
+        removeAll();
+        
+        if(items.isEmpty()){
+            JLabel emptyLabel = new JLabel("Your cart is empty", SwingConstants.CENTER);
+            emptyLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+            emptyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            add(Box.createVerticalStrut(20));
+            add(emptyLabel);
+        } else {
+            for (CartItem item : items) {
+                add(createCartItemPanel(item));
+                add(Box.createVerticalStrut(10));
+            }
+        }
+        
+        revalidate();
+        repaint();
+    }
+    
+    private void initUI(){
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBackground(Color.WHITE);
+    }
     private void buildCart() {
         removeAll();
 

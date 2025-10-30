@@ -37,6 +37,13 @@ public final class DatabaseSetup {
                     "product_name VARCHAR(100), " +
                     "Quantity INT, " +
                     "price DOUBLE)");
+            
+             s.executeUpdate("CREATE TABLE CART (" + 
+                    "ID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " + 
+                    "PRODUCT_NAME VARCHAR(100), " + 
+                    "QUANTITY INT, " +
+                    "PRICE DOUBLE, " + 
+                    ")");
 
             insertSampleProducts(c);
 

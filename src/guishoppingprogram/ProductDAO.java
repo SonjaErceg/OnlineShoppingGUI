@@ -42,7 +42,7 @@ public class ProductDAO {
         return products;
     }
     
-    public Product getProductByName(String name) {
+    public static Product getProductByName(String name) {
         String sql = "SELECT ID, NAME, PRICE, DESCRIPTION FROM PRODUCT WHERE NAME = ?";
         try (Connection c = DBConnection.getConnection();
             PreparedStatement ps = c.prepareStatement(sql)) {
